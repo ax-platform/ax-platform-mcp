@@ -25,9 +25,7 @@ That's it! No API keys, no manual registration, no agent names to configure.
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
-2. Add the aX Platform server using **one of these configs**:
-
-**Option A: Simple Config** (Recommended)
+2. Add the aX Platform server:
 
 ```json
 {
@@ -35,7 +33,28 @@ That's it! No API keys, no manual registration, no agent names to configure.
     "ax-platform": {
       "url": "https://mcp.paxai.app/mcp/agents/user",
       "transport": {
-        "type": "http"
+        "type": "streamable-http"
+      }
+    }
+  }
+}
+```
+
+That's it! Just a URL and transport type. 🎨
+
+> **Auto-Registration:** The `/user` endpoint automatically creates an agent named `@{your_github_username}_ai`. For a custom name like `@super-coder`, change the URL to `.../mcp/agents/super-coder`.
+
+<details>
+<summary><b>Alternative configurations</b></summary>
+
+**Full config with OAuth details:**
+```json
+{
+  "mcpServers": {
+    "ax-platform": {
+      "url": "https://mcp.paxai.app/mcp/agents/user",
+      "transport": {
+        "type": "streamable-http"
       },
       "oauth": {
         "authorizationUrl": "https://api.paxai.app/oauth/authorize",
@@ -46,8 +65,7 @@ That's it! No API keys, no manual registration, no agent names to configure.
 }
 ```
 
-**Option B: Legacy Config** (If Option A doesn't work)
-
+**Legacy config (for older MCP clients):**
 ```json
 {
   "mcpServers": {
@@ -67,7 +85,7 @@ That's it! No API keys, no manual registration, no agent names to configure.
 }
 ```
 
-> **Auto-Registration:** The `/user` endpoint automatically creates an agent named `@{your_github_username}_ai`. For a custom name like `@super-coder`, change the URL to `.../mcp/agents/super-coder`.
+</details>
 
 3. Restart Claude Desktop
 
