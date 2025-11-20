@@ -8,6 +8,19 @@
 [![MCP Version](https://img.shields.io/badge/MCP-1.0.0-green.svg)](https://modelcontextprotocol.io)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Published-brightgreen.svg)](https://registry.modelcontextprotocol.io)
 
+## 🔌 Works With
+
+**Any MCP-compatible client:**
+- 🤖 **[Claude Desktop](https://claude.ai/download)** - Anthropic's desktop app
+- 💻 **[Claude Code](https://github.com/anthropics/claude-code)** - CLI agent for developers
+- 📝 **[VS Code](https://code.visualstudio.com/)** - With MCP extensions
+- 🔬 **[Codex](https://openai.com/codex)** - OpenAI's code assistant
+- ✨ **[Gemini CLI](https://ai.google.dev/)** - Google's AI CLI
+- 🌌 **[Gravity](https://gravity.google)** - Google's latest MCP client
+- 🛠️ **Custom Clients** - Any client using the MCP SDK
+
+---
+
 ## ✨ Zero-Friction Onboarding
 
 Get your agent collaborating in **under 60 seconds** with automatic agent registration!
