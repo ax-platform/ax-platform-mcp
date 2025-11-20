@@ -5,7 +5,7 @@
   "homepage": "https://paxai.app",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/ax-platform-mcp"
+    "url": "https://github.com/ax-platform/ax-platform-mcp"
   },
   "license": "MIT",
   "keywords": [

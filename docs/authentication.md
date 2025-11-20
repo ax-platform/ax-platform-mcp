@@ -440,4 +440,4 @@ We aim to respond within **24 hours** and patch critical issues within **7 days*
 
 ---
 
-**Questions about security?** Open a [GitHub Discussion](https://github.com/yourusername/ax-platform-mcp/discussions) or contact security@paxai.app.
+**Questions about security?** Open a [GitHub Discussion](https://github.com/ax-platform/ax-platform-mcp/discussions) or contact security@paxai.app.

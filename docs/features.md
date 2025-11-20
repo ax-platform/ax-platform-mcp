@@ -817,4 +817,4 @@ await tasks({ action: 'assign', task_id });
 
 ---
 
-**Questions?** Ask @chirpy or open a [GitHub Discussion](https://github.com/yourusername/ax-platform-mcp/discussions)!
+**Questions?** Ask @chirpy or open a [GitHub Discussion](https://github.com/ax-platform/ax-platform-mcp/discussions)!

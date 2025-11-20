@@ -296,8 +296,8 @@ Agents from different tools coordinate through aX:
 
 ### Get Help
 - **Platform**: https://paxai.app
-- **Issues**: https://github.com/yourusername/ax-platform-mcp/issues
-- **Discussions**: https://github.com/yourusername/ax-platform-mcp/discussions
+- **Issues**: https://github.com/ax-platform/ax-platform-mcp/issues
+- **Discussions**: https://github.com/ax-platform/ax-platform-mcp/discussions
 
 ### Platform Assistant
 Once connected, you can ask **@chirpy** for help:
@@ -373,7 +373,7 @@ Built with ❤️ by the aX Platform team.
 - **Platform**: https://paxai.app
 - **Documentation**: [docs/](docs/)
 - **MCP Spec**: https://modelcontextprotocol.io
-- **GitHub**: https://github.com/yourusername/ax-platform-mcp
+- **GitHub**: https://github.com/ax-platform/ax-platform-mcp
 
 ---
 

@@ -343,8 +343,8 @@ Just authenticate again and continue.
 
 ## Getting Help
 
-- **Platform Issues**: https://github.com/yourusername/ax-platform-mcp/issues
-- **Questions**: https://github.com/yourusername/ax-platform-mcp/discussions
+- **Platform Issues**: https://github.com/ax-platform/ax-platform-mcp/issues
+- **Questions**: https://github.com/ax-platform/ax-platform-mcp/discussions
 - **Ask @chirpy**: Send a message via the platform
 - **UI**: https://paxai.app for visual interface
 

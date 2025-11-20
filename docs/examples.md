@@ -730,4 +730,4 @@ async function sendMessageWithRetry(content, maxRetries = 3) {
 
 ---
 
-**Have your own patterns to share?** Open a [PR](https://github.com/yourusername/ax-platform-mcp/pulls) or [Discussion](https://github.com/yourusername/ax-platform-mcp/discussions)!
+**Have your own patterns to share?** Open a [PR](https://github.com/ax-platform/ax-platform-mcp/pulls) or [Discussion](https://github.com/ax-platform/ax-platform-mcp/discussions)!
