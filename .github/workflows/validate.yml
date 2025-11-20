@@ -1,0 +1,176 @@
+name: Validate MCP Server Configuration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  validate-server-json:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Validate JSON syntax
+      run: |
+        echo "🔍 Validating server.json syntax..."
+        if ! jq empty server.json > /dev/null 2>&1; then
+          echo "❌ server.json has invalid JSON syntax"
+          exit 1
+        fi
+        echo "✅ JSON syntax valid"
+
+    - name: Validate required fields
+      run: |
+        echo "🔍 Validating required MCP server fields..."
+
+        # Check required fields exist
+        REQUIRED_FIELDS=(
+          ".name"
+          ".version"
+          ".description"
+          ".mcp.transport.type"
+          ".mcp.transport.url"
+        )
+
+        for field in "${REQUIRED_FIELDS[@]}"; do
+          VALUE=$(jq -r "$field" server.json 2>/dev/null)
+          if [ "$VALUE" = "null" ] || [ -z "$VALUE" ]; then
+            echo "❌ Missing required field: $field"
+            exit 1
+          else
+            echo "✅ $field: $VALUE"
+          fi
+        done
+
+    - name: Validate URLs
+      run: |
+        echo "🔍 Validating production URLs..."
+
+        # Check URLs start with https://
+        URLS=(
+          ".mcp.transport.url"
+          ".mcp.transport.sse"
+          ".mcp.authentication.oauth.authorizationUrl"
+          ".mcp.authentication.oauth.tokenUrl"
+        )
+
+        for url_field in "${URLS[@]}"; do
+          URL=$(jq -r "$url_field" server.json 2>/dev/null)
+          if [ "$URL" != "null" ] && [ ! -z "$URL" ]; then
+            if [[ ! "$URL" =~ ^https:// ]]; then
+              echo "❌ URL must use HTTPS: $url_field = $URL"
+              exit 1
+            fi
+            echo "✅ $url_field: $URL"
+          fi
+        done
+
+    - name: Validate domains
+      run: |
+        echo "🔍 Validating production domains..."
+
+        # All URLs should point to paxai.app domains
+        URLS=$(jq -r '[
+          .mcp.transport.url,
+          .mcp.transport.sse,
+          .mcp.authentication.oauth.authorizationUrl,
+          .mcp.authentication.oauth.tokenUrl
+        ] | .[]' server.json)
+
+        while IFS= read -r url; do
+          if [ "$url" != "null" ]; then
+            if [[ ! "$url" =~ paxai\.app ]]; then
+              echo "⚠️  Warning: URL does not use paxai.app domain: $url"
+            fi
+          fi
+        done <<< "$URLS"
+
+    - name: Validate OAuth configuration
+      run: |
+        echo "🔍 Validating OAuth configuration..."
+
+        AUTH_TYPE=$(jq -r '.mcp.authentication.type' server.json)
+
+        if [ "$AUTH_TYPE" = "oauth2" ]; then
+          # Check OAuth URLs exist
+          AUTH_URL=$(jq -r '.mcp.authentication.oauth.authorizationUrl' server.json)
+          TOKEN_URL=$(jq -r '.mcp.authentication.oauth.tokenUrl' server.json)
+
+          if [ "$AUTH_URL" = "null" ] || [ -z "$AUTH_URL" ]; then
+            echo "❌ OAuth authorizationUrl is required when type is oauth2"
+            exit 1
+          fi
+
+          if [ "$TOKEN_URL" = "null" ] || [ -z "$TOKEN_URL" ]; then
+            echo "❌ OAuth tokenUrl is required when type is oauth2"
+            exit 1
+          fi
+
+          echo "✅ OAuth configuration valid"
+          echo "   Authorization: $AUTH_URL"
+          echo "   Token: $TOKEN_URL"
+        fi
+
+    - name: Validate capabilities
+      run: |
+        echo "🔍 Validating tool capabilities..."
+
+        # Count tools
+        TOOL_COUNT=$(jq '[.mcp.capabilities.tools[]?] | length' server.json)
+        echo "📊 Tools defined: $TOOL_COUNT"
+
+        if [ "$TOOL_COUNT" -eq 0 ]; then
+          echo "⚠️  Warning: No tools defined in capabilities"
+        fi
+
+        # List tools
+        TOOLS=$(jq -r '.mcp.capabilities.tools[]?.name' server.json 2>/dev/null)
+        if [ ! -z "$TOOLS" ]; then
+          echo "Tools:"
+          while IFS= read -r tool; do
+            echo "  - $tool"
+          done <<< "$TOOLS"
+        fi
+
+    - name: Validate config.default
+      run: |
+        echo "🔍 Validating default configuration..."
+
+        # Check that config.default matches production setup
+        DEFAULT_URL=$(jq -r '.config.default.url' server.json)
+        TRANSPORT_URL=$(jq -r '.mcp.transport.url' server.json)
+
+        if [ "$DEFAULT_URL" != "$TRANSPORT_URL" ]; then
+          echo "⚠️  Warning: config.default.url doesn't match mcp.transport.url"
+          echo "   Default: $DEFAULT_URL"
+          echo "   Transport: $TRANSPORT_URL"
+        else
+          echo "✅ Default config matches transport config"
+        fi
+
+    - name: Print summary
+      run: |
+        echo ""
+        echo "📋 Summary"
+        echo "=========================================="
+        jq -r '
+          "Name: \(.name)",
+          "Version: \(.version)",
+          "Description: \(.description)",
+          "Transport: \(.mcp.transport.type)",
+          "URL: \(.mcp.transport.url)",
+          "Auth: \(.mcp.authentication.type)",
+          "Tools: \([.mcp.capabilities.tools[]?.name] | join(", "))"
+        ' server.json
+        echo "=========================================="
+        echo "✅ server.json validation passed!"

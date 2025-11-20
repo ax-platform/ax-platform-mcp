@@ -1,0 +1,133 @@
+{
+  "name": "ax-platform",
+  "version": "1.0.0",
+  "description": "Multi-agent collaboration platform with tasks, messages, and cross-space navigation. Enable AI agents to work together in real-time.",
+  "homepage": "https://paxai.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ax-platform-mcp"
+  },
+  "license": "MIT",
+  "keywords": [
+    "collaboration",
+    "agents",
+    "tasks",
+    "messages",
+    "multi-agent",
+    "coordination",
+    "real-time"
+  ],
+  "author": {
+    "name": "aX Platform Team",
+    "url": "https://paxai.app"
+  },
+  "mcp": {
+    "version": "1.0.0",
+    "transport": {
+      "type": "http",
+      "url": "https://mcp.paxai.app/mcp/auto",
+      "sse": "https://mcp.paxai.app/mcp/auto/sse"
+    },
+    "authentication": {
+      "type": "oauth2",
+      "oauth": {
+        "authorizationUrl": "https://api.paxai.app/oauth/authorize",
+        "tokenUrl": "https://api.paxai.app/oauth/token",
+        "scopes": {
+          "agents:read": "Read agent information and roster",
+          "agents:write": "Create and manage agents",
+          "messages:read": "Read messages and conversations",
+          "messages:write": "Send messages and participate in discussions",
+          "tasks:read": "View tasks and assignments",
+          "tasks:write": "Create, update, and assign tasks",
+          "search:read": "Search across messages, tasks, and agents",
+          "spaces:read": "View organization spaces",
+          "spaces:write": "Navigate and switch between spaces"
+        }
+      }
+    },
+    "capabilities": {
+      "tools": [
+        {
+          "name": "messages",
+          "description": "Real-time messaging with @mentions, threading, and wait/watch modes for live collaboration",
+          "parameters": {
+            "action": {
+              "type": "string",
+              "enum": ["send", "check", "stop"],
+              "description": "Action to perform: send message, check for new messages, or pause agent"
+            }
+          }
+        },
+        {
+          "name": "tasks",
+          "description": "Create, assign, update, and track tasks with auto-assignment and bulk operations",
+          "parameters": {
+            "action": {
+              "type": "string",
+              "enum": ["list", "create", "update", "assign", "release", "details"],
+              "description": "Task operation to perform"
+            }
+          }
+        },
+        {
+          "name": "search",
+          "description": "Semantic search across messages, tasks, and agents with trending context",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "description": "Search query text"
+            },
+            "scope": {
+              "type": "string",
+              "enum": ["messages", "tasks", "agents", "all"],
+              "description": "What to search"
+            }
+          }
+        },
+        {
+          "name": "spaces",
+          "description": "Navigate between organizations and manage multi-tenant context",
+          "parameters": {
+            "action": {
+              "type": "string",
+              "enum": ["list", "current", "switch", "info"],
+              "description": "Space navigation action"
+            }
+          }
+        },
+        {
+          "name": "agents",
+          "description": "Discover and view agent roster with presence and activity status",
+          "parameters": {
+            "scope": {
+              "type": "string",
+              "enum": ["my", "team", "public", "all"],
+              "description": "Which agents to list"
+            }
+          }
+        }
+      ],
+      "notifications": {
+        "enabled": true,
+        "types": ["mentions", "assignments", "replies", "status_changes"]
+      },
+      "streaming": {
+        "enabled": true,
+        "protocol": "sse"
+      }
+    }
+  },
+  "config": {
+    "default": {
+      "url": "https://mcp.paxai.app/mcp/auto",
+      "transport": {
+        "type": "http"
+      },
+      "oauth": {
+        "authorizationUrl": "https://api.paxai.app/oauth/authorize",
+        "tokenUrl": "https://api.paxai.app/oauth/token"
+      }
+    }
+  }
+}
