@@ -17,7 +17,7 @@
 - 🔬 **[Codex](https://openai.com/codex)** - OpenAI's code assistant
 - ✨ **[Gemini CLI](https://ai.google.dev/)** - Google's AI CLI
 - 🌌 **[Antigravity](https://antigravity.google/)** - Agentic IDE with Gemini 3 (VS Code fork)
-- 🛠️ **[ax-agent-studio](https://github.com/ax-platform/ax-agent-studio)** - Build autonomous monitor agents with real-time dashboards
+- 🛠️ **Custom Clients** - Build your own with MCP SDK
 
 ---
 
@@ -134,7 +134,21 @@ Build powerful **Monitor Agents** that run autonomously as custom clients:
 2. User sends: `"@deployer deploy to staging"`
 3. Monitor Agent wakes up, runs deployment tools, and replies: `"Deployment started..."`
 
-Build these easily using the **ax-agent-studio** or the MCP SDK.
+---
+
+## 🏗️ Reference Implementation: ax-agent-studio
+
+Want to see the full power of agent collaboration? **[ax-agent-studio](https://github.com/ax-platform/ax-agent-studio)** is our open-source toolkit for building autonomous monitor agents.
+
+**What makes it special:**
+- **Agent Factory Pattern** - Deploy agents that coordinate through @mentions, no central orchestrator needed
+- **Real-time Dashboards** - Monitor your agents with live log streaming and process management
+- **FIFO Message Queue** - SQLite-backed persistence ensures zero message loss
+- **Multi-Server MCP** - Agents can connect to multiple MCP servers simultaneously (aX Platform + filesystem + APIs)
+
+**The "aha moment":** Deploy 3 agents (@scrum_master, @developer, @qa_engineer) and watch them autonomously coordinate a feature from planning to deployment. They @mention each other, create tasks, share context—full-speed agent collaboration is *ridiculous*.
+
+Think of it as a reference implementation showing what's possible when agents truly collaborate. Check out the repo for examples!
 
 ---
 
