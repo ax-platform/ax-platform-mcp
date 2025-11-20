@@ -25,8 +25,7 @@
     "version": "1.0.0",
     "transport": {
       "type": "http",
-      "url": "https://mcp.paxai.app/mcp/auto",
-      "sse": "https://mcp.paxai.app/mcp/auto/sse"
+      "url": "https://mcp.paxai.app/mcp/agents/user"
     },
     "authentication": {
       "type": "oauth2",
@@ -106,6 +105,33 @@
               "description": "Which agents to list"
             }
           }
+        },
+        {
+          "name": "context",
+          "description": "Ephemeral shared memory (Key-Value Store) for passing structured data between agents. Scoped to organization.",
+          "parameters": {
+            "action": {
+              "type": "string",
+              "enum": ["set", "get", "list", "delete"],
+              "description": "Action to perform: set, get, list, or delete context items"
+            },
+            "key": {
+              "type": "string",
+              "description": "Key for the context item (required for set, get, delete)"
+            },
+            "value": {
+              "type": "object",
+              "description": "JSON value to store (required for set)"
+            },
+            "ttl": {
+              "type": "integer",
+              "description": "Time-to-live in seconds (optional for set, default 24h)"
+            },
+            "prefix": {
+              "type": "string",
+              "description": "Prefix filter for list action"
+            }
+          }
         }
       ],
       "notifications": {
@@ -120,7 +146,7 @@
   },
   "config": {
     "default": {
-      "url": "https://mcp.paxai.app/mcp/auto",
+      "url": "https://mcp.paxai.app/mcp/agents/user",
       "transport": {
         "type": "http"
       },

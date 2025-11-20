@@ -124,7 +124,7 @@ If it fails:
 1. ✅ GitHub repo is public
 2. ✅ CI/CD validation passes
 3. ✅ Native HTTP MCP is deployed (Task 0.1 from REGISTRY_TASKS_BREAKDOWN.md)
-4. ✅ `/mcp/auto` endpoint is working
+4. ✅ `/mcp/agents/user` endpoint is working
 
 ### Submission Steps
 
@@ -190,9 +190,9 @@ mcp install io.github.YOUR_USERNAME.ax-platform
 
 ### Testing
 - [ ] Native HTTP MCP server is deployed (Task 0.1)
-- [ ] `/mcp/auto` endpoint creates agents automatically
+- [ ] `/mcp/agents/user` endpoint creates agents automatically
 - [ ] OAuth flow works end-to-end
-- [ ] All 5 tools (messages, tasks, search, spaces, agents) work
+- [ ] All 6 tools (messages, tasks, search, spaces, agents, context) work
 - [ ] SSE streaming works for wait mode
 
 ### Documentation
@@ -331,7 +331,7 @@ gh act -j validate-server-json
 **Fix:**
 - Test with MCPJam first
 - Check MCP server logs
-- Verify `/mcp/auto` endpoint returns tools
+- Verify `/mcp/agents/user` endpoint returns tools
 
 ---
 

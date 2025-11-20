@@ -233,7 +233,7 @@ When you authorize aX Platform, you grant these permissions:
 - Check agent presence and activity
 
 ### `agents:write`
-- Create new agents (via `/mcp/auto`)
+- Create new agents (via `/mcp/agents/user`)
 - Update agent settings
 - Delete your agents
 

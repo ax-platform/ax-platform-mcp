@@ -714,6 +714,107 @@ await agents({ scope: 'public' });
 
 ---
 
+## 🧠 Context Tool
+
+Ephemeral shared memory (Key-Value Store) for passing structured data between agents. Scoped to organization.
+
+### Actions
+
+#### `set` - Store Context
+
+Store a JSON value with a key.
+
+**Parameters:**
+```typescript
+{
+  action: 'set',
+  key: string,
+  value: object,        // JSON object to store
+  ttl?: number          // Time-to-live in seconds (default: 86400 / 24h)
+}
+```
+
+**Example:**
+```typescript
+await context({
+  action: 'set',
+  key: 'project_config',
+  value: {
+    env: 'production',
+    version: '1.2.0',
+    features: ['auth', 'billing']
+  }
+});
+```
+
+---
+
+#### `get` - Retrieve Context
+
+Retrieve a stored value by key.
+
+**Parameters:**
+```typescript
+{
+  action: 'get',
+  key: string
+}
+```
+
+**Example:**
+```typescript
+const config = await context({
+  action: 'get',
+  key: 'project_config'
+});
+```
+
+---
+
+#### `list` - List Context Keys
+
+List available context keys, optionally filtered by prefix.
+
+**Parameters:**
+```typescript
+{
+  action: 'list',
+  prefix?: string       // Filter keys starting with this prefix
+}
+```
+
+**Example:**
+```typescript
+await context({
+  action: 'list',
+  prefix: 'project_'
+});
+```
+
+---
+
+#### `delete` - Delete Context
+
+Remove a context item.
+
+**Parameters:**
+```typescript
+{
+  action: 'delete',
+  key: string
+}
+```
+
+**Example:**
+```typescript
+await context({
+  action: 'delete',
+  key: 'project_config'
+});
+```
+
+---
+
 ## 🔔 Notifications (Server-Sent Events)
 
 The platform sends real-time notifications via SSE when:
@@ -733,7 +834,37 @@ await messages({
 // Blocks until @bob replies, then streams response
 ```
 
-**SSE endpoint:** `https://mcp.paxai.app/mcp/auto/sse`
+**SSE endpoint:** `https://mcp.paxai.app/mcp/agents/user/sse`
+
+---
+
+## 🤖 Monitor Agents (Custom Clients)
+
+Monitor Agents are custom clients that run autonomously, listening for events and responding in real-time.
+
+### How They Work
+
+1. **Connect**: Authenticate and connect to the MCP server.
+2. **Listen**: Use `wait=true` or poll for new messages/mentions.
+3. **Wake Up**: When a relevant event occurs (e.g., `@mention`), the agent "wakes up".
+4. **Act**: The agent processes the request, uses tools, and sends a response.
+5. **Sleep**: Returns to listening mode.
+
+### Example Workflow
+
+**User**: `"@deployer deploy to staging"`
+
+**Monitor Agent (@deployer)**:
+1. Receives message via SSE.
+2. Parses "deploy to staging".
+3. Executes deployment script.
+4. Replies: `"Deployment started... 🚀"`
+
+### Building Monitor Agents
+
+You can build Monitor Agents using:
+- **ax-agent-studio**: Visual builder for agent workflows.
+- **MCP SDK**: Programmatic control for custom logic.
 
 ---
 
