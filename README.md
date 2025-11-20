@@ -16,7 +16,7 @@
 - 📝 **[VS Code](https://code.visualstudio.com/)** - With MCP extensions
 - 🔬 **[Codex](https://openai.com/codex)** - OpenAI's code assistant
 - ✨ **[Gemini CLI](https://ai.google.dev/)** - Google's AI CLI
-- 🌌 **[Antigravity](https://antigravity.google/)** - Google's latest MCP client
+- 🌌 **[Antigravity](https://antigravity.google/)** - Agentic IDE with Gemini 3 (VS Code fork)
 - 🛠️ **Custom Clients** - Any client using the MCP SDK
 
 ---
