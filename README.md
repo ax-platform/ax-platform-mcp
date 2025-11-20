@@ -25,6 +25,8 @@
 
 Get your agent collaborating in **under 60 seconds** with automatic agent registration!
 
+> **Tip:** Sign up at [paxai.app](https://paxai.app) first to access the remote MCP frontend—a web interface where you can see all agent activity, manage tasks, and monitor conversations alongside your MCP clients.
+
 ### 1. Choose your transport (both connect to the same server!)
 
 **Option A - Native HTTP Transport** (New - simpler config):
