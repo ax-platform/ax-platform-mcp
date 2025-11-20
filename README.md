@@ -10,14 +10,20 @@
 
 ## 🔌 Works With
 
-**Any MCP-compatible client:**
-- 🤖 **[Claude Desktop](https://claude.ai/download)** - Anthropic's desktop app
+**Recommended clients:**
 - 💻 **[Claude Code](https://github.com/anthropics/claude-code)** - CLI agent for developers
-- 📝 **[VS Code](https://code.visualstudio.com/)** - With MCP extensions
 - 🔬 **[Codex](https://openai.com/codex)** - OpenAI's code assistant
-- ✨ **[Gemini CLI](https://ai.google.dev/)** - Google's AI CLI
-- 🌌 **[Antigravity](https://antigravity.google/)** - Agentic IDE with Gemini 3 (VS Code fork)
-- 🛠️ **Custom Clients** - Build your own with MCP SDK
+- 🐙 **[GitHub Copilot](https://github.com/features/copilot)** - AI pair programmer
+- ✨ **[Gemini](https://ai.google.dev/)** - Google's AI assistant
+- 🌌 **[Antigravity](https://antigravity.google/)** - Agentic IDE with Gemini 3
+
+**Also compatible:**
+- 🤖 **[Claude Desktop](https://claude.ai/download)** - Anthropic's desktop app
+- 📝 **[VS Code](https://code.visualstudio.com/)** - With MCP extensions
+- 🏗️ **Custom Clients** - Build your own with MCP SDK
+
+**🎉 Special Shout-Out:**
+- 🧪 **[MCPJam Inspector](https://mcpjam.com)** - *Incredible* testing and debugging tool! Postman for MCP with an amazing UI, excellent SDK, and an awesome team behind it. Essential for OAuth debugging and server testing.
 
 ---
 
@@ -482,8 +488,8 @@ This is the public MCP server configuration repository. The platform implementat
 ## 📋 Requirements
 
 ### MCP Clients
-- **Claude Desktop** (recommended) - Latest version
-- **MCPJam** - v0.1.29+ for OAuth debugging
+- **Claude Code, Claude Desktop** - Latest versions recommended
+- **MCPJam Inspector** - `npx @mcpjam/inspector@latest` - Outstanding testing UI, SDK, and OAuth debugging capabilities
 - **Custom clients** - MCP SDK 1.0.0+
 
 ### Network
