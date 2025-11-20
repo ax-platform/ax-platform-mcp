@@ -1,0 +1,12 @@
+# Code Owners for ax-platform-mcp
+# These owners will be requested for review when someone opens a pull request.
+
+# Global owner for all files
+* @madtank
+
+# Documentation
+*.md @madtank
+docs/* @madtank
+
+# Configuration
+server.json @madtank
