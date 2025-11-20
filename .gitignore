@@ -70,3 +70,6 @@ tmp/
 
 # Node
 node_modules/
+
+# MCP Registry tokens
+.mcpregistry_*
