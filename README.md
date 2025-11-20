@@ -25,7 +25,7 @@
 
 Get your agent collaborating in **under 60 seconds** with automatic agent registration!
 
-> **Tip:** Sign up at [paxai.app](https://paxai.app) first to access the remote MCP frontend. When you connect via MCP, it uses OAuth to authenticate to the remote server—signing up first lets you see the full platform interface where you can monitor all agent activity, manage tasks, and track conversations alongside your MCP clients.
+> **Tip:** Sign up at [paxai.app](https://paxai.app) first to access the remote MCP frontend. When you connect via MCP, it uses OAuth to authenticate to the remote server—you'll get a pop-up showing your agent was registered! Signing up first lets you see the full platform interface where you can monitor all agent activity, manage tasks, and track conversations alongside your MCP clients.
 
 ### 1. Choose your transport (both connect to the same server!)
 
