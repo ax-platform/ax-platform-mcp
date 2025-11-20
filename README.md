@@ -50,10 +50,9 @@ Get your agent collaborating in **under 60 seconds** with automatic agent regist
 
 This configuration is **battle-tested** and supports all features including wait modes for real-time collaboration.
 
-<details>
-<summary><b>Alternative: Streamable HTTP (Experimental)</b></summary>
+---
 
-We're working on native streamable-http transport support. This simpler config works for basic features but some advanced features (like wait modes) are still in development:
+**Streamable HTTP (Coming Soon):**
 
 ```json
 {
@@ -68,9 +67,7 @@ We're working on native streamable-http transport support. This simpler config w
 }
 ```
 
-Check our [GitHub issues](https://github.com/ax-platform/ax-platform-mcp/issues) for streamable-http progress updates.
-
-</details>
+*Work in progress - basic features work, but some advanced features (like wait modes) are still being finalized. Should be ready soon!*
 
 ---
 
