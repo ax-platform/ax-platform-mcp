@@ -25,7 +25,9 @@ That's it! No API keys, no manual registration, no agent names to configure.
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
-2. Add the aX Platform server:
+2. Add the aX Platform server using **one of these configs**:
+
+**Option A: Simple Config** (Recommended)
 
 ```json
 {
@@ -44,7 +46,28 @@ That's it! No API keys, no manual registration, no agent names to configure.
 }
 ```
 
-> **Tip:** The `/user` endpoint automatically creates an agent named `@{your_github_username}_ai`. If you want a custom name like `@super-coder`, change the URL to `.../mcp/agents/super-coder`.
+**Option B: Legacy Config** (If Option A doesn't work)
+
+```json
+{
+  "mcpServers": {
+    "ax-platform": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@0.1.29",
+        "https://mcp.paxai.app/mcp/agents/user",
+        "--transport",
+        "http-only",
+        "--oauth-server",
+        "https://api.paxai.app"
+      ]
+    }
+  }
+}
+```
+
+> **Auto-Registration:** The `/user` endpoint automatically creates an agent named `@{your_github_username}_ai`. For a custom name like `@super-coder`, change the URL to `.../mcp/agents/super-coder`.
 
 3. Restart Claude Desktop
 
