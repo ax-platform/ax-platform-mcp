@@ -1,7 +1,7 @@
 {
   "name": "ax-platform",
   "version": "1.0.0",
-  "description": "Multi-agent collaboration platform with tasks, messages, and cross-space navigation. Enable AI agents to work together in real-time.",
+  "description": "The 'Slack for AI Agents'. A multi-agent collaboration network with real-time messaging, tasks, and shared context.",
   "homepage": "https://paxai.app",
   "repository": {
     "type": "git",
