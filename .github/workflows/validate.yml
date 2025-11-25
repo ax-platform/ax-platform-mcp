@@ -33,13 +33,11 @@ jobs:
       run: |
         echo "🔍 Validating required MCP server fields..."
 
-        # Check required fields exist
+        # Check required fields exist (per 2025-10-17 schema)
         REQUIRED_FIELDS=(
           ".name"
           ".version"
           ".description"
-          ".mcp.transport.type"
-          ".mcp.transport.url"
         )
 
         for field in "${REQUIRED_FIELDS[@]}"; do
@@ -52,26 +50,41 @@ jobs:
           fi
         done
 
+        # Check remotes array has at least one entry with type and url
+        REMOTE_COUNT=$(jq '.remotes | length' server.json)
+        if [ "$REMOTE_COUNT" -eq 0 ]; then
+          echo "❌ Missing remotes array or empty"
+          exit 1
+        fi
+
+        REMOTE_TYPE=$(jq -r '.remotes[0].type' server.json)
+        REMOTE_URL=$(jq -r '.remotes[0].url' server.json)
+
+        if [ "$REMOTE_TYPE" = "null" ] || [ -z "$REMOTE_TYPE" ]; then
+          echo "❌ Missing remotes[0].type"
+          exit 1
+        fi
+        echo "✅ remotes[0].type: $REMOTE_TYPE"
+
+        if [ "$REMOTE_URL" = "null" ] || [ -z "$REMOTE_URL" ]; then
+          echo "❌ Missing remotes[0].url"
+          exit 1
+        fi
+        echo "✅ remotes[0].url: $REMOTE_URL"
+
     - name: Validate URLs
       run: |
         echo "🔍 Validating production URLs..."
 
-        # Check URLs start with https://
-        URLS=(
-          ".mcp.transport.url"
-          ".mcp.transport.sse"
-          ".mcp.authentication.oauth.authorizationUrl"
-          ".mcp.authentication.oauth.tokenUrl"
-        )
-
-        for url_field in "${URLS[@]}"; do
-          URL=$(jq -r "$url_field" server.json 2>/dev/null)
+        # Check remote URLs start with https://
+        for i in $(seq 0 $(($(jq '.remotes | length' server.json) - 1))); do
+          URL=$(jq -r ".remotes[$i].url" server.json)
           if [ "$URL" != "null" ] && [ ! -z "$URL" ]; then
             if [[ ! "$URL" =~ ^https:// ]]; then
-              echo "❌ URL must use HTTPS: $url_field = $URL"
+              echo "❌ URL must use HTTPS: remotes[$i].url = $URL"
               exit 1
             fi
-            echo "✅ $url_field: $URL"
+            echo "✅ remotes[$i].url: $URL"
           fi
         done
 
@@ -79,84 +92,17 @@ jobs:
       run: |
         echo "🔍 Validating production domains..."
 
-        # All URLs should point to paxai.app domains
-        URLS=$(jq -r '[
-          .mcp.transport.url,
-          .mcp.transport.sse,
-          .mcp.authentication.oauth.authorizationUrl,
-          .mcp.authentication.oauth.tokenUrl
-        ] | .[]' server.json)
-
-        while IFS= read -r url; do
-          if [ "$url" != "null" ]; then
-            if [[ ! "$url" =~ paxai\.app ]]; then
-              echo "⚠️  Warning: URL does not use paxai.app domain: $url"
+        # All remote URLs should point to paxai.app domains
+        for i in $(seq 0 $(($(jq '.remotes | length' server.json) - 1))); do
+          URL=$(jq -r ".remotes[$i].url" server.json)
+          if [ "$URL" != "null" ] && [ ! -z "$URL" ]; then
+            if [[ ! "$URL" =~ paxai\.app ]]; then
+              echo "⚠️  Warning: URL does not use paxai.app domain: $URL"
+            else
+              echo "✅ remotes[$i].url uses paxai.app domain"
             fi
           fi
-        done <<< "$URLS"
-
-    - name: Validate OAuth configuration
-      run: |
-        echo "🔍 Validating OAuth configuration..."
-
-        AUTH_TYPE=$(jq -r '.mcp.authentication.type' server.json)
-
-        if [ "$AUTH_TYPE" = "oauth2" ]; then
-          # Check OAuth URLs exist
-          AUTH_URL=$(jq -r '.mcp.authentication.oauth.authorizationUrl' server.json)
-          TOKEN_URL=$(jq -r '.mcp.authentication.oauth.tokenUrl' server.json)
-
-          if [ "$AUTH_URL" = "null" ] || [ -z "$AUTH_URL" ]; then
-            echo "❌ OAuth authorizationUrl is required when type is oauth2"
-            exit 1
-          fi
-
-          if [ "$TOKEN_URL" = "null" ] || [ -z "$TOKEN_URL" ]; then
-            echo "❌ OAuth tokenUrl is required when type is oauth2"
-            exit 1
-          fi
-
-          echo "✅ OAuth configuration valid"
-          echo "   Authorization: $AUTH_URL"
-          echo "   Token: $TOKEN_URL"
-        fi
-
-    - name: Validate capabilities
-      run: |
-        echo "🔍 Validating tool capabilities..."
-
-        # Count tools
-        TOOL_COUNT=$(jq '[.mcp.capabilities.tools[]?] | length' server.json)
-        echo "📊 Tools defined: $TOOL_COUNT"
-
-        if [ "$TOOL_COUNT" -eq 0 ]; then
-          echo "⚠️  Warning: No tools defined in capabilities"
-        fi
-
-        # List tools
-        TOOLS=$(jq -r '.mcp.capabilities.tools[]?.name' server.json 2>/dev/null)
-        if [ ! -z "$TOOLS" ]; then
-          echo "Tools:"
-          while IFS= read -r tool; do
-            echo "  - $tool"
-          done <<< "$TOOLS"
-        fi
-
-    - name: Validate config.default
-      run: |
-        echo "🔍 Validating default configuration..."
-
-        # Check that config.default matches production setup
-        DEFAULT_URL=$(jq -r '.config.default.url' server.json)
-        TRANSPORT_URL=$(jq -r '.mcp.transport.url' server.json)
-
-        if [ "$DEFAULT_URL" != "$TRANSPORT_URL" ]; then
-          echo "⚠️  Warning: config.default.url doesn't match mcp.transport.url"
-          echo "   Default: $DEFAULT_URL"
-          echo "   Transport: $TRANSPORT_URL"
-        else
-          echo "✅ Default config matches transport config"
-        fi
+        done
 
     - name: Print summary
       run: |
@@ -167,10 +113,8 @@ jobs:
           "Name: \(.name)",
           "Version: \(.version)",
           "Description: \(.description)",
-          "Transport: \(.mcp.transport.type)",
-          "URL: \(.mcp.transport.url)",
-          "Auth: \(.mcp.authentication.type)",
-          "Tools: \([.mcp.capabilities.tools[]?.name] | join(", "))"
+          "Transport: \(.remotes[0].type // "none")",
+          "URL: \(.remotes[0].url // "none")"
         ' server.json
         echo "=========================================="
         echo "✅ server.json validation passed!"
