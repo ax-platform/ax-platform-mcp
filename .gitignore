@@ -73,3 +73,7 @@ node_modules/
 
 # MCP Registry tokens
 .mcpregistry_*
+
+# Local documentation
+docs/registry-checklist.md
+docs/github-registry-email-draft.md

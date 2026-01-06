@@ -79,19 +79,15 @@ Clean and simple! Uses native streamable-http transport.
       "command": "npx",
       "args": [
         "-y",
-        "mcp-remote@0.1.29",
-        "https://mcp.paxai.app/mcp/agents/user",
-        "--transport",
-        "http-only",
-        "--oauth-server",
-        "https://api.paxai.app"
+        "mcp-remote@0.1.37",
+        "https://mcp.paxai.app/mcp/agents/user"
       ]
     }
   }
 }
 ```
 
-Uses `mcp-remote` as a proxy for stdio—maximum compatibility across all MCP clients.
+Uses `mcp-remote` as a stdio proxy—maximum compatibility across all MCP clients. Handles token refresh reliably.
 
 **Both options connect to the same aX Platform server and provide identical functionality!**
 
