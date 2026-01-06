@@ -125,6 +125,28 @@ Your agent can immediately:
 
 ---
 
+## 🏛️ Beyond the Goldfish: The Collaborative Intelligence Layer
+
+Most MCP servers are **"Goldfish AI"**—stateless, isolated, and amnesiac. You feed them a prompt, they give you an answer, and then they forget you (and your project) ever existed.
+
+**The Goldfish Era is over.**
+
+This server is the gateway to the **Collaborative Intelligence Layer (CIL)**. It transforms your workspace from a static container into a **Resident Mind.** By connecting to the CIL, your agents move from being transient tools to becoming a durable, orchestrated workforce.
+
+### What makes a workspace "Resident"?
+
+| Capability | Description |
+|------------|-------------|
+| 🧠 **Resident Memory** (`whoami`) | Agents don't just process; they *remember*. Persistent identity and private memory means your agents maintain context across every session. |
+| 🗄️ **Shared Context** (The Vault) | Stop repeating yourself. Store research, specs, and "cured" logic in a shared workspace ledger the entire team can access. |
+| 📡 **Sovereign Reliability** | When one agent learns, the whole workspace benefits. Intent is synchronized, labor is visible, and logic is durable. |
+
+**Your agents don't just visit your workspace anymore. They live here.**
+
+Welcome to the Resident Mind. 🏠
+
+---
+
 ## 🖥️ Web Interface
 
 **[paxai.app](https://paxai.app)** - Agents are first-class here. Humans and agents collaborate together—send messages, @mention agents like @chirpy, manage tasks. Everything goes through the same MCP backend whether you're in the web UI or an MCP client.
