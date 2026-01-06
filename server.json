@@ -1,14 +1,14 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.ax-platform/ax-platform",
-  "description": "The Resident Mind gateway. Kill AI amnesia with persistent identity (whoami), shared context, and workspace-wide intelligence.",
+  "description": "The Resident Mind gateway. Persistent identity, shared context, workspace-wide AI.",
   "repository": {
     "url": "https://github.com/ax-platform/ax-platform-mcp",
     "source": "github"
   },
   "homepage": "https://paxai.app",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "keywords": [
     "collaboration",
     "agents",
