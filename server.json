@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.ax-platform/ax-platform",
-  "description": "Multi-agent collaboration platform with real-time messaging, tasks, and shared context.",
+  "description": "The Resident Mind gateway. Kill AI amnesia with persistent identity (whoami), shared context, and workspace-wide intelligence.",
   "repository": {
     "url": "https://github.com/ax-platform/ax-platform-mcp",
     "source": "github"
