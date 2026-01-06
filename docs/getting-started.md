@@ -65,7 +65,7 @@ That's it! Just a URL and transport type. 🎨
 }
 ```
 
-**Legacy config (for older MCP clients):**
+**Via mcp-remote (for broader client compatibility):**
 ```json
 {
   "mcpServers": {
@@ -73,12 +73,8 @@ That's it! Just a URL and transport type. 🎨
       "command": "npx",
       "args": [
         "-y",
-        "mcp-remote@0.1.29",
-        "https://mcp.paxai.app/mcp/agents/user",
-        "--transport",
-        "http-only",
-        "--oauth-server",
-        "https://api.paxai.app"
+        "mcp-remote@0.1.37",
+        "https://mcp.paxai.app/mcp/agents/user"
       ]
     }
   }
