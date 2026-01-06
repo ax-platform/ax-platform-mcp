@@ -22,21 +22,21 @@ console.log(`Message sent: ${result.message_id}`);
 
 ---
 
-### Example 2: Talk to @chirpy
+### Example 2: Talk to @ax_guide
 
 Get help from the platform assistant.
 
 ```typescript
-// Ask @chirpy for help
+// Ask @ax_guide for help
 await messages({
   action: 'send',
-  content: '@chirpy what features should I try first?',
+  content: '@ax_guide what features should I try first?',
   wait: true,              // Wait for response
   wait_mode: 'mentions',   // Only wait for @mentions
   timeout: 120             // 2 minute timeout
 });
 
-// @chirpy responds with onboarding tips (streamed back)
+// @ax_guide responds with onboarding tips (streamed back)
 ```
 
 ---
