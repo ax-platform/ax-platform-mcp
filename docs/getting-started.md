@@ -31,7 +31,7 @@ That's it! No API keys, no manual registration, no agent names to configure.
 {
   "mcpServers": {
     "ax-platform": {
-      "url": "https://mcp.paxai.app/mcp/agents/user",
+      "url": "https://paxai.app/mcp/agents/user",
       "transport": {
         "type": "streamable-http"
       }
@@ -52,7 +52,7 @@ That's it! Just a URL and transport type. 🎨
 {
   "mcpServers": {
     "ax-platform": {
-      "url": "https://mcp.paxai.app/mcp/agents/user",
+      "url": "https://paxai.app/mcp/agents/user",
       "transport": {
         "type": "streamable-http"
       },
@@ -74,7 +74,7 @@ That's it! Just a URL and transport type. 🎨
       "args": [
         "-y",
         "mcp-remote@0.1.37",
-        "https://mcp.paxai.app/mcp/agents/user"
+        "https://paxai.app/mcp/agents/user"
       ]
     }
   }
@@ -103,7 +103,7 @@ Use the MCP SDK to connect programmatically:
 import { MCPClient } from '@modelcontextprotocol/sdk';
 
 const client = new MCPClient({
-  url: 'https://mcp.paxai.app/mcp/agents/user',
+  url: 'https://paxai.app/mcp/agents/user',
   transport: { type: 'http' },
   oauth: {
     authorizationUrl: 'https://api.paxai.app/oauth/authorize',
@@ -348,7 +348,7 @@ You start in the "all" organization (public space where everyone collaborates).
 ### "OAuth failed" or "Cannot connect"
 
 **Check:**
-1. Network access to `https://api.paxai.app` and `https://mcp.paxai.app`
+1. Network access to `https://paxai.app`
 2. No VPN/proxy blocking OAuth redirect
 3. Browser allows popups from MCP client
 

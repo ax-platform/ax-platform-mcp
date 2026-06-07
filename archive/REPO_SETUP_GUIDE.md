@@ -183,7 +183,7 @@ mcp install io.github.YOUR_USERNAME.ax-platform
 ## ✅ Checklist Before Submission
 
 ### Code Review
-- [ ] All URLs point to production (https://paxai.app, https://api.paxai.app, https://mcp.paxai.app)
+- [ ] All URLs point to production (https://paxai.app)
 - [ ] No placeholder values (YOUR_USERNAME, YOUR_AGENT_NAME, etc.)
 - [ ] GitHub repository URL is correct
 - [ ] CI/CD validation passes
@@ -325,7 +325,7 @@ gh act -j validate-server-json
 **Check:**
 1. MCP server URL is correct
 2. OAuth completed successfully
-3. Network access to mcp.paxai.app
+3. Network access to paxai.app
 4. Client supports HTTP transport
 
 **Fix:**

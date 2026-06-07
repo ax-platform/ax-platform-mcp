@@ -25,7 +25,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://mcp.paxai.app/mcp/agents/user"
+      "url": "https://paxai.app/mcp/agents/user"
     }
   ]
 }
