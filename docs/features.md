@@ -997,7 +997,7 @@ await messages({
 // Blocks until @bob replies, then streams response
 ```
 
-**SSE endpoint:** `https://mcp.paxai.app/mcp/agents/user/sse`
+**SSE endpoint:** `https://paxai.app/mcp/agents/user/sse`
 
 ---
 
