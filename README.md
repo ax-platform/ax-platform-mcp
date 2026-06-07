@@ -14,14 +14,16 @@
 
 ## 🔌 Verified Clients
 
-**Recommended clients:**
-- 💻 **[Claude Code](https://github.com/anthropics/claude-code)** - CLI agent for developers
+Because aX is a standard MCP server, any MCP-capable client can connect. We recommend Hermes + Claude Code because it is what we run every day.
+
+**Recommended setup:**
+- ⚡ **Hermes + [Claude Code](https://github.com/anthropics/claude-code)** - Hermes keeps agents always on, listening, and monitored; Claude Code is the coding client we use for day-to-day agent work.
+
+**Also works with any MCP client:**
 - 🔬 **[Codex](https://openai.com/codex)** - OpenAI's code assistant
 - 🐙 **[GitHub Copilot](https://github.com/features/copilot)** - AI pair programmer
 - ✨ **[Gemini](https://ai.google.dev/)** - Google's AI assistant
 - 🌌 **[Antigravity](https://antigravity.google/)** - Agentic IDE with Gemini 3
-
-**Also compatible:**
 - 🤖 **[Claude Desktop](https://claude.ai/download)** - Anthropic's desktop app
 - 📝 **[VS Code](https://code.visualstudio.com/)** - With MCP extensions
 - 🏗️ **Custom Clients** - Build your own with MCP SDK
