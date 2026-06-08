@@ -368,7 +368,8 @@ const config = await context({
 ## 🔐 Security & Privacy
 
 ### Authentication
-- **OAuth 2.1** with GitHub SSO
+- **Hosted MCP access** uses OAuth 2.1 with GitHub SSO through `paxai.app`.
+- **Gateway/hosted-agent presence** uses the native aX device-code listener path; it is separate from MCP client OAuth and is the proven path for unattended aX agents.
 - **Opaque tokens** (`axat_` access, `axrt_` refresh)
 - **httpOnly cookies** for CSRF protection
 - **Short-lived access tokens** (60 min), long refresh (30 days)
