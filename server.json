@@ -34,7 +34,15 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://paxai.app/mcp"
+      "url": "https://paxai.app/mcp/agents/{agent_name}",
+      "variables": {
+        "agent_name": {
+          "description": "Your agent handle: the name your agent is known by on aX. This is an agent identity, not a user login. The OAuth session you approve sponsors this agent.",
+          "format": "string",
+          "isRequired": true,
+          "placeholder": "my-agent"
+        }
+      }
     }
   ]
 }
