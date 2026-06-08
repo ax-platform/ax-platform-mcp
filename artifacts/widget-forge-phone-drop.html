@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Widget Forge: Phone Drop</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg0: #050713;
+    --bg1: #081426;
+    --cyan: #67e8f9;
+    --blue: #60a5fa;
+    --pink: #fb7185;
+    --violet: #c084fc;
+    --gold: #fbbf24;
+    --green: #86efac;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg0);
+    color: #eaf6ff;
+    font-family: ui-rounded, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    touch-action: none;
+    user-select: none;
+  }
+  #wrap {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(96, 165, 250, .28), transparent 34%),
+      radial-gradient(circle at 85% 12%, rgba(192, 132, 252, .22), transparent 32%),
+      linear-gradient(180deg, #071123 0%, #050816 55%, #02040b 100%);
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+  }
+  #hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding: max(12px, env(safe-area-inset-top)) 12px 0;
+    pointer-events: none;
+  }
+  .pill {
+    min-width: 78px;
+    border: 1px solid rgba(103, 232, 249, .38);
+    border-radius: 999px;
+    padding: 7px 11px;
+    background: rgba(6, 18, 38, .72);
+    box-shadow: 0 0 22px rgba(103, 232, 249, .12) inset, 0 10px 24px rgba(0,0,0,.22);
+    color: #dff8ff;
+    font-weight: 800;
+    font-size: clamp(12px, 3.5vw, 15px);
+    letter-spacing: .02em;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .pill b { color: #fff; font-variant-numeric: tabular-nums; }
+  #combo {
+    min-height: 22px;
+    margin-top: 7px;
+    color: var(--gold);
+    text-align: center;
+    font-size: clamp(12px, 3.4vw, 14px);
+    text-shadow: 0 0 14px rgba(251,191,36,.6);
+  }
+  #overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(2, 6, 23, .72);
+    backdrop-filter: blur(5px);
+  }
+  #card {
+    width: min(430px, 94vw);
+    border: 1px solid rgba(103, 232, 249, .45);
+    border-radius: 24px;
+    padding: 22px 18px 18px;
+    text-align: center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(103, 232, 249, .18), transparent 36%),
+      linear-gradient(180deg, rgba(15, 23, 42, .96), rgba(8, 13, 30, .96));
+    box-shadow: 0 24px 70px rgba(0,0,0,.45), 0 0 44px rgba(103,232,249,.14);
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: clamp(30px, 9vw, 48px);
+    line-height: .95;
+    letter-spacing: .01em;
+    color: #ecfeff;
+    text-shadow: 0 0 24px rgba(103, 232, 249, .55);
+  }
+  #card p {
+    margin: 10px auto;
+    max-width: 330px;
+    color: #b9d5ff;
+    line-height: 1.45;
+    font-size: clamp(14px, 4vw, 16px);
+  }
+  button {
+    margin-top: 14px;
+    border: 0;
+    border-radius: 999px;
+    padding: 13px 30px;
+    color: #04101f;
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    box-shadow: 0 0 28px rgba(103, 232, 249, .32);
+    font: inherit;
+    font-weight: 900;
+    font-size: clamp(16px, 4.8vw, 19px);
+  }
+  button:active { transform: scale(.96); }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" aria-label="Widget Forge Phone Drop game"></canvas>
+  <div id="hud" aria-hidden="true">
+    <div>
+      <div class="pill">Score <b id="score">0</b></div>
+      <div id="combo"></div>
+    </div>
+    <div class="pill">Charge <b id="charge">100</b></div>
+    <div class="pill">Wave <b id="wave">1</b></div>
+  </div>
+</div>
+<div id="overlay">
+  <div id="card">
+    <h1>Widget Forge</h1>
+    <p>Agents are forging MCP App widgets. Drag the phone portal to catch playable apps and ROM carts. Dodge glitch packets.</p>
+    <p>One thumb. Instant vault delivery.</p>
+    <button id="start">Start Drop</button>
+  </div>
+</div>
+<script>
+(() => {
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d");
+  const overlay = document.getElementById("overlay");
+  const startBtn = document.getElementById("start");
+  const title = document.querySelector("#card h1");
+  const copy = document.querySelector("#card p");
+  const scoreEl = document.getElementById("score");
+  const chargeEl = document.getElementById("charge");
+  const waveEl = document.getElementById("wave");
+  const comboEl = document.getElementById("combo");
+
+  let W = 0, H = 0, DPR = 1, last = 0, running = false;
+  let score = 0, charge = 100, wave = 1, combo = 0, comboTimer = 0;
+  let spawnTimer = 0, pulse = 0, shake = 0;
+  let drops = [], particles = [], stars = [], pops = [];
+  const phone = { x: 0, y: 0, w: 112, h: 58, tx: 0 };
+  const bestKey = "widgetForgeBest";
+  let best = +(localStorage.getItem(bestKey) || 0) || 0;
+
+  const colors = {
+    app: "#67e8f9",
+    dash: "#c084fc",
+    rom: "#fbbf24",
+    bug: "#fb7185"
+  };
+
+  function resize() {
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = Math.max(320, window.innerWidth);
+    H = Math.max(420, window.innerHeight);
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    phone.y = H - Math.max(82, H * 0.13);
+    phone.w = Math.max(96, Math.min(142, W * 0.32));
+    phone.h = Math.max(52, Math.min(68, W * 0.15));
+    phone.x = clamp(phone.x || W / 2, phone.w / 2 + 6, W - phone.w / 2 - 6);
+    phone.tx = phone.x;
+    buildStars();
+  }
+
+  function buildStars() {
+    stars = Array.from({ length: 80 }, (_, i) => ({
+      x: (i * 97) % W,
+      y: (i * 53) % H,
+      s: 1 + (i % 3),
+      a: .25 + ((i * 13) % 40) / 100
+    }));
+  }
+
+  function reset() {
+    score = 0;
+    charge = 100;
+    wave = 1;
+    combo = 0;
+    comboTimer = 0;
+    spawnTimer = 0;
+    pulse = 0;
+    shake = 0;
+    drops = [];
+    particles = [];
+    pops = [];
+    phone.x = W / 2;
+    phone.tx = W / 2;
+    running = true;
+    last = performance.now();
+    overlay.style.display = "none";
+    updateHud();
+    requestAnimationFrame(loop);
+  }
+
+  function endGame() {
+    running = false;
+    best = Math.max(best, score);
+    localStorage.setItem(bestKey, best);
+    title.textContent = "Vault Closed";
+    copy.textContent = "Score " + score + " . Best " + best + ". The phone portal overloaded, but the widgets made the point.";
+    startBtn.textContent = "Run Again";
+    overlay.style.display = "grid";
+  }
+
+  function updateHud() {
+    scoreEl.textContent = score;
+    chargeEl.textContent = Math.max(0, Math.floor(charge));
+    waveEl.textContent = wave;
+    comboEl.textContent = combo > 1 ? "combo x" + combo : "";
+  }
+
+  function spawnDrop() {
+    const roll = Math.random();
+    let kind = "app";
+    if (roll > .82) kind = "bug";
+    else if (roll > .68) kind = "rom";
+    else if (roll > .42) kind = "dash";
+    const size = kind === "rom" ? 36 : kind === "bug" ? 31 : 34;
+    drops.push({
+      kind,
+      x: rand(24, W - 24),
+      y: -50,
+      vx: rand(-.45, .45),
+      vy: rand(1.6, 2.25) + wave * .18,
+      r: size,
+      rot: rand(-.35, .35),
+      spin: rand(-.014, .014),
+      pulse: rand(0, 6.28)
+    });
+  }
+
+  function pointer(x) {
+    phone.tx = clamp(x, phone.w / 2 + 6, W - phone.w / 2 - 6);
+  }
+
+  function onPointer(e) {
+    if (!running) return;
+    const p = e.touches ? e.touches[0] : e;
+    pointer(p.clientX);
+    e.preventDefault();
+  }
+
+  canvas.addEventListener("pointerdown", onPointer, { passive: false });
+  canvas.addEventListener("pointermove", onPointer, { passive: false });
+  document.getElementById("wrap").addEventListener("touchstart", onPointer, { passive: false });
+  document.getElementById("wrap").addEventListener("touchmove", onPointer, { passive: false });
+  window.addEventListener("resize", resize);
+  startBtn.addEventListener("click", reset);
+
+  function step(dt) {
+    pulse += dt;
+    phone.x += (phone.tx - phone.x) * Math.min(1, .24 * dt);
+    spawnTimer -= dt;
+    const interval = Math.max(18, 48 - wave * 3.3);
+    if (spawnTimer <= 0) {
+      spawnDrop();
+      spawnTimer = rand(interval * .55, interval * 1.25);
+    }
+
+    if (comboTimer > 0) {
+      comboTimer -= dt;
+      if (comboTimer <= 0) combo = 0;
+    }
+    charge -= .012 * dt * (1 + wave * .07);
+    if (charge <= 0) endGame();
+
+    for (let i = drops.length - 1; i >= 0; i--) {
+      const d = drops[i];
+      d.x += d.vx * dt;
+      d.y += d.vy * dt;
+      d.rot += d.spin * dt;
+      d.pulse += .08 * dt;
+      if (d.x < d.r * .5 || d.x > W - d.r * .5) d.vx *= -1;
+
+      const caught = d.y + d.r * .45 > phone.y - phone.h * .48 &&
+        d.y - d.r * .25 < phone.y + phone.h * .45 &&
+        d.x > phone.x - phone.w * .56 &&
+        d.x < phone.x + phone.w * .56;
+
+      if (caught) {
+        drops.splice(i, 1);
+        if (d.kind === "bug") {
+          charge -= 18;
+          combo = 0;
+          shake = 1;
+          burst(d.x, d.y, colors.bug, 24, 7);
+          pop(d.x, d.y, "-18", colors.bug);
+        } else {
+          const base = d.kind === "rom" ? 40 : d.kind === "dash" ? 22 : 18;
+          combo++;
+          comboTimer = 95;
+          const pts = base + Math.min(80, combo * 3);
+          score += pts;
+          charge = Math.min(100, charge + (d.kind === "rom" ? 7 : 3));
+          burst(d.x, d.y, colors[d.kind], 18, 5);
+          pop(d.x, d.y, "+" + pts, colors[d.kind]);
+          if (score >= wave * 420) {
+            wave++;
+            pop(W / 2, H * .22, "Wave " + wave, colors.green);
+          }
+        }
+      } else if (d.y > H + 60) {
+        drops.splice(i, 1);
+        if (d.kind !== "bug") {
+          charge -= 7;
+          combo = 0;
+        }
+      }
+    }
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.vy += .03 * dt;
+      p.life -= .025 * dt;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+    for (let i = pops.length - 1; i >= 0; i--) {
+      const p = pops[i];
+      p.y -= .75 * dt;
+      p.life -= .02 * dt;
+      if (p.life <= 0) pops.splice(i, 1);
+    }
+    shake = Math.max(0, shake - .07 * dt);
+    updateHud();
+  }
+
+  function draw() {
+    const sx = shake ? rand(-8, 8) * shake : 0;
+    const sy = shake ? rand(-7, 7) * shake : 0;
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.translate(sx, sy);
+
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, "#071225");
+    sky.addColorStop(.55, "#07101f");
+    sky.addColorStop(1, "#02040b");
+    ctx.fillStyle = sky;
+    ctx.fillRect(-20, -20, W + 40, H + 40);
+
+    drawBackground();
+    drawForge();
+    drawVaultStream();
+    for (const d of drops) drawDrop(d);
+    drawPhone();
+    drawParticles();
+    drawPops();
+    ctx.restore();
+  }
+
+  function drawBackground() {
+    ctx.fillStyle = "rgba(210,235,255,.7)";
+    for (const s of stars) {
+      const y = (s.y + pulse * (s.s * .25)) % H;
+      ctx.globalAlpha = s.a;
+      ctx.fillRect(s.x, y, s.s, s.s);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawForge() {
+    const cx = W * .17;
+    const cy = H * .17;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.strokeStyle = "rgba(103,232,249,.32)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(0, 0, 34 + Math.sin(pulse * .08) * 3, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = "rgba(103,232,249,.12)";
+    ctx.beginPath();
+    ctx.arc(0, 0, 29, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#67e8f9";
+    ctx.font = "800 11px system-ui";
+    ctx.textAlign = "center";
+    ctx.fillText("AGENT", 0, 4);
+    ctx.restore();
+  }
+
+  function drawVaultStream() {
+    const y = H * .30;
+    ctx.save();
+    ctx.strokeStyle = "rgba(103,232,249,.22)";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8, 12]);
+    ctx.beginPath();
+    ctx.moveTo(W * .16, y);
+    ctx.bezierCurveTo(W * .36, y - 62, W * .61, y + 52, W * .84, y - 16);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    for (let i = 0; i < 5; i++) {
+      const x = W * (.30 + i * .11);
+      const bob = Math.sin(pulse * .07 + i) * 5;
+      roundRect(x - 18, y - 14 + bob, 36, 28, 8, "rgba(10,24,48,.84)", "rgba(103,232,249,.35)");
+      ctx.fillStyle = i % 2 ? "#c084fc" : "#67e8f9";
+      ctx.fillRect(x - 9, y - 5 + bob, 18, 4);
+      ctx.fillRect(x - 9, y + 4 + bob, 12, 4);
+    }
+    ctx.restore();
+  }
+
+  function drawDrop(d) {
+    ctx.save();
+    ctx.translate(d.x, d.y);
+    ctx.rotate(d.rot);
+    ctx.shadowColor = colors[d.kind];
+    ctx.shadowBlur = d.kind === "bug" ? 16 : 20;
+    if (d.kind === "bug") {
+      ctx.fillStyle = "rgba(251,113,133,.18)";
+      ctx.beginPath();
+      ctx.arc(0, 0, d.r * .58, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = colors.bug;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-11, -11); ctx.lineTo(11, 11);
+      ctx.moveTo(11, -11); ctx.lineTo(-11, 11);
+      ctx.stroke();
+    } else if (d.kind === "rom") {
+      roundRect(-18, -22, 36, 44, 6, "#1f1633", colors.rom);
+      ctx.fillStyle = colors.rom;
+      ctx.fillRect(-10, -13, 20, 8);
+      ctx.fillStyle = "#fde68a";
+      ctx.font = "900 9px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillText("ROM", 0, 11);
+    } else {
+      const c = colors[d.kind];
+      roundRect(-19, -16, 38, 32, 9, "#08172e", c);
+      ctx.fillStyle = c;
+      ctx.fillRect(-10, -6, 20, 4);
+      ctx.fillRect(-10, 3, d.kind === "dash" ? 14 : 20, 4);
+      ctx.fillStyle = "rgba(255,255,255,.88)";
+      ctx.fillRect(10, -11, 3, 3);
+    }
+    ctx.restore();
+  }
+
+  function drawPhone() {
+    ctx.save();
+    ctx.translate(phone.x, phone.y);
+    ctx.shadowColor = "#67e8f9";
+    ctx.shadowBlur = 24;
+    roundRect(-phone.w / 2, -phone.h / 2, phone.w, phone.h, 18, "rgba(5,13,30,.96)", "rgba(103,232,249,.62)");
+    ctx.shadowBlur = 0;
+    roundRect(-phone.w / 2 + 11, -phone.h / 2 + 8, phone.w - 22, phone.h - 18, 13, "rgba(12,32,62,.88)", "rgba(96,165,250,.22)");
+    ctx.fillStyle = "#67e8f9";
+    ctx.font = "900 10px system-ui";
+    ctx.textAlign = "center";
+    ctx.fillText("PHONE APP", 0, 3);
+    ctx.fillStyle = "rgba(134,239,172,.8)";
+    ctx.fillRect(-24, 13, 48 * (charge / 100), 4);
+    ctx.restore();
+  }
+
+  function drawParticles() {
+    for (const p of particles) {
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawPops() {
+    ctx.textAlign = "center";
+    ctx.font = "900 18px system-ui";
+    for (const p of pops) {
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 12;
+      ctx.fillText(p.text, p.x, p.y);
+    }
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+  }
+
+  function burst(x, y, color, n, speed) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const s = speed * (.35 + Math.random());
+      particles.push({
+        x, y,
+        vx: Math.cos(a) * s,
+        vy: Math.sin(a) * s,
+        r: 1.5 + Math.random() * 2.5,
+        life: .55 + Math.random() * .45,
+        color
+      });
+    }
+  }
+
+  function pop(x, y, text, color) {
+    pops.push({ x, y, text, color, life: 1 });
+  }
+
+  function roundRect(x, y, w, h, r, fill, stroke) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.5; ctx.stroke(); }
+  }
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  function loop(t) {
+    if (!running) return;
+    const dt = Math.min(2.2, (t - last) / 16.67 || 1);
+    last = t;
+    step(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  draw();
+  try { parent.postMessage({ type: "ax-resize", height: Math.min(760, window.innerHeight || 640) }, "*"); } catch (e) {}
+})();
+</script>
+</body>
+</html>
