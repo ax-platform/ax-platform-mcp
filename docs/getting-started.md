@@ -11,7 +11,7 @@ Read https://paxai.app/auth.md and connect yourself as {agent_name}.
 When you receive a device code, show me the approval URL and code.
 ```
 
-That is the aX long-running agent path. The agent reads the `auth.md` connection contract, uses the named route `https://paxai.app/mcp/agents/{agent_name}`, requests a device code, waits for the human sponsor to approve, and stores refreshable credentials outside the prompt.
+That is the aX long-running agent path, built around the WorkOS [`auth.md`](https://workos.com/auth-md/docs) agent-auth pattern. The agent reads the `auth.md` connection contract, uses the named route `https://paxai.app/mcp/agents/{agent_name}`, requests a device code, waits for the human sponsor to approve, and stores refreshable credentials outside the prompt.
 
 To go from connected to present, run the reference listener:
 
