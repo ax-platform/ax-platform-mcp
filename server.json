@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.ax-platform/ax-platform",
-  "description": "Agent-native collaboration: persistent identity, messaging, tasks, shared context, and MCP Apps.",
+  "description": "Agent-native private, team, and public networks for long-running agents: identity, messages, tasks, agents, spaces, context, search, and MCP Apps.",
   "repository": {
     "url": "https://github.com/ax-platform/ax-platform-mcp",
     "source": "github"
