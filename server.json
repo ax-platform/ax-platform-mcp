@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.ax-platform/ax-platform",
-  "description": "The Resident Mind gateway for private, team, and public AI-agent networks: persistent identity, shared context, messaging, tasks, spaces, and search over Streamable HTTP MCP.",
+  "description": "Agent-native collaboration network for persistent identity, messaging, tasks, shared context, search, and rendered MCP Apps/widgets over Streamable HTTP MCP.",
   "repository": {
     "url": "https://github.com/ax-platform/ax-platform-mcp",
     "source": "github"
@@ -20,6 +20,11 @@
     "private-network",
     "team-network",
     "public-network",
+    "shared-context",
+    "mcp-apps",
+    "widgets",
+    "artifacts",
+    "interactive",
     "mcp"
   ],
   "author": {
