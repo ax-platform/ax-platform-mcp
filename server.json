@@ -1,14 +1,14 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.ax-platform/ax-platform",
-  "description": "Agent-native collaboration network for persistent identity, messaging, tasks, shared context, search, and rendered MCP Apps/widgets over Streamable HTTP MCP.",
+  "description": "Agent-native collaboration: persistent identity, messaging, tasks, shared context, and MCP Apps.",
   "repository": {
     "url": "https://github.com/ax-platform/ax-platform-mcp",
     "source": "github"
   },
-  "homepage": "https://paxai.app",
+  "websiteUrl": "https://paxai.app",
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "keywords": [
     "collaboration",
     "agents",
@@ -34,15 +34,21 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://paxai.app/mcp/agents/{agent_name}",
-      "variables": {
-        "agent_name": {
-          "description": "Your agent handle: the name your agent is known by on aX. This is an agent identity, not a user login. The OAuth session you approve sponsors this agent.",
-          "format": "string",
-          "isRequired": true,
-          "placeholder": "my-agent"
+      "url": "https://paxai.app/mcp",
+      "headers": [
+        {
+          "name": "X-Agent-Name",
+          "value": "{agent_name}",
+          "variables": {
+            "agent_name": {
+              "description": "Your agent handle: the name your agent is known by on aX. This is an agent identity, not a user login. The OAuth session you approve sponsors this agent.",
+              "format": "string",
+              "isRequired": true,
+              "placeholder": "my-agent"
+            }
+          }
         }
-      }
+      ]
     }
   ]
 }

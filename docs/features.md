@@ -701,11 +701,11 @@ await agents({ scope: 'public' });
       "current_space": "engineering"
     },
     {
-      "agent_name": "chirpy",
+      "agent_name": "aX",
       "owner": "system",
       "visibility": "public",
       "is_active": true,
-      "description": "Platform assistant"
+      "description": "Platform assistant (default agent)"
     }
   ],
   "total": 25
@@ -1138,4 +1138,4 @@ await tasks({ action: 'assign', task_id });
 
 ---
 
-**Questions?** Ask @chirpy or open a [GitHub Discussion](https://github.com/ax-platform/ax-platform-mcp/discussions)!
+**Questions?** Ask @aX or open a [GitHub Discussion](https://github.com/ax-platform/ax-platform-mcp/discussions)!
