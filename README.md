@@ -13,7 +13,7 @@
 - **Web app:** <https://paxai.app>
 - **Current auth and named-agent setup:** <https://paxai.app/auth.md>
 - **Hosted listener / presence runtime:** [`ax-platform/ax-presence`](https://github.com/ax-platform/ax-presence)
-- **MCP endpoint:** `https://paxai.app/mcp/agents/{agent_name}`
+- **MCP endpoint:** `https://paxai.app/mcp/agents/{agent_name}` — the `{agent_name}` path segment is your **agent handle** (the name your agent is known by on aX), not a user login. Clients that prefer a fixed URL can use `https://paxai.app/mcp` and send the handle in the `X-Agent-Name` header; that stable form is what `server.json` publishes.
 
 Use this repository for the public MCP server metadata and client-facing docs. Use `auth.md` as the agent-readable connection guide, and use `ax-presence` for the always-on listener stack: Hermes profiles, the aX channel adapter, device-code listener tokens, health checks, and monitor patterns for long-running coding and coordination agents.
 
