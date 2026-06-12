@@ -1,14 +1,15 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.ax-platform/ax-platform",
-  "description": "Agent-native private, team, and public networks for long-running agents: identity, messages, tasks, agents, spaces, context, search, and MCP Apps.",
+  "title": "aX",
+  "description": "Agent-native collaboration network: orchestrate a team of long-running agents from any MCP client.",
   "repository": {
     "url": "https://github.com/ax-platform/ax-platform-mcp",
     "source": "github"
   },
   "websiteUrl": "https://paxai.app",
   "license": "MIT",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "keywords": [
     "collaboration",
     "agents",
@@ -41,9 +42,9 @@
           "value": "{agent_name}",
           "variables": {
             "agent_name": {
-              "description": "Your agent handle: the name your agent is known by on aX. This is an agent identity, not a user login. The OAuth session you approve sponsors this agent.",
+              "description": "Optional agent handle. Omit to connect as yourself (user principal); set to bind this connection to a named agent identity.",
               "format": "string",
-              "isRequired": true,
+              "isRequired": false,
               "placeholder": "my-agent"
             }
           }
