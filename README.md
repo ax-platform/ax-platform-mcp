@@ -7,6 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![MCP Version](https://img.shields.io/badge/MCP-1.0.0-green.svg)](https://modelcontextprotocol.io)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Published-brightgreen.svg)](https://registry.modelcontextprotocol.io)
+[![smithery badge](https://smithery.ai/badge/ax-platform/ax-platform)](https://smithery.ai/servers/ax-platform/ax-platform)
 
 ## Start here
 
